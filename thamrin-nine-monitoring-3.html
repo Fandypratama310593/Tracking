@@ -1,0 +1,1029 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Thamrin Nine — Monitoring Proyek</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&family=Inter:wght@400;500;600&family=IBM+Plex+Mono:wght@500;600&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --navy:#1F3A5F;
+    --navy-dark:#142840;
+    --amber:#D98C3D;
+    --amber-dark:#B86F25;
+    --bg:#F2F4F7;
+    --surface:#FFFFFF;
+    --border:#DBE1E8;
+    --text:#1B2430;
+    --text-soft:#6B7785;
+    --success:#2F9E6E;
+    --danger:#C84B4B;
+    --danger-dark:#A93939;
+    --radius:6px;
+  }
+  *{box-sizing:border-box;}
+  body{
+    margin:0;
+    font-family:'Inter',sans-serif;
+    color:var(--text);
+    background-color:var(--bg);
+    background-image:
+      linear-gradient(rgba(31,58,95,0.05) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(31,58,95,0.05) 1px, transparent 1px);
+    background-size: 24px 24px;
+    min-height:100vh;
+  }
+  .app{display:flex; min-height:100vh;}
+
+  /* ---------- Sidebar ---------- */
+  .sidebar{
+    width:300px;
+    flex-shrink:0;
+    background:var(--navy);
+    color:#EAF0F7;
+    display:flex;
+    flex-direction:column;
+    padding:20px 16px;
+  }
+  .brand{
+    display:flex;
+    flex-direction:column;
+    gap:2px;
+    margin-bottom:18px;
+    padding-bottom:14px;
+    border-bottom:1px solid rgba(255,255,255,0.15);
+  }
+  .brand .name{
+    font-family:'Space Grotesk',sans-serif;
+    font-size:19px;
+    font-weight:700;
+    letter-spacing:0.3px;
+  }
+  .brand .tag{
+    font-size:11px;
+    text-transform:uppercase;
+    letter-spacing:1.4px;
+    color:#A9C2DC;
+  }
+  .sidebar-actions{display:flex; gap:8px; margin-bottom:12px;}
+  .btn{
+    border:none;
+    border-radius:var(--radius);
+    padding:9px 14px;
+    font-family:'Inter',sans-serif;
+    font-weight:600;
+    font-size:13px;
+    cursor:pointer;
+    transition:transform .08s ease, filter .15s ease;
+  }
+  .btn:active{transform:translateY(1px);}
+  .btn-amber{background:var(--amber); color:#1B2430;}
+  .btn-amber:hover{filter:brightness(1.06);}
+  .btn-ghost{background:transparent; color:#EAF0F7; border:1px solid rgba(255,255,255,0.3);}
+  .btn-ghost:hover{background:rgba(255,255,255,0.08);}
+  .btn-block{width:100%;}
+  .btn-sm{padding:6px 10px; font-size:12px;}
+  .btn-outline{background:transparent; border:1px solid var(--border); color:var(--text);}
+  .btn-outline:hover{background:#F5F6F8;}
+  .btn-danger-outline{background:transparent; border:1px solid var(--danger); color:var(--danger);}
+  .btn-danger-outline:hover{background:rgba(200,75,75,0.08);}
+  .btn-primary{background:var(--navy); color:#fff;}
+  .btn-primary:hover{background:var(--navy-dark);}
+
+  .search-box{margin-bottom:10px;}
+  .search-box input{
+    width:100%;
+    padding:9px 10px;
+    border-radius:var(--radius);
+    border:1px solid rgba(255,255,255,0.25);
+    background:rgba(255,255,255,0.08);
+    color:#fff;
+    font-size:13px;
+  }
+  .search-box input::placeholder{color:#A9C2DC;}
+
+  .proyek-list{
+    flex:1;
+    overflow-y:auto;
+    display:flex;
+    flex-direction:column;
+    gap:6px;
+  }
+  .proyek-item{
+    padding:10px 12px;
+    border-radius:var(--radius);
+    cursor:pointer;
+    border:1px solid transparent;
+  }
+  .proyek-item:hover{background:rgba(255,255,255,0.07);}
+  .proyek-item.active{background:rgba(255,255,255,0.13); border-color:var(--amber);}
+  .proyek-item .pi-name{font-weight:600; font-size:14px; line-height:1.3;}
+  .proyek-item .pi-loc{font-size:11.5px; color:#A9C2DC; margin-top:2px;}
+  .proyek-item .pi-val{
+    font-family:'IBM Plex Mono',monospace;
+    font-size:11.5px;
+    color:#CFE0F0;
+    margin-top:4px;
+  }
+  .empty-list{color:#A9C2DC; font-size:13px; padding:10px 4px;}
+
+  .sidebar-footer{
+    border-top:1px solid rgba(255,255,255,0.15);
+    padding-top:12px;
+    margin-top:12px;
+    display:flex;
+    flex-direction:column;
+    gap:6px;
+  }
+  .file-input-hidden{display:none;}
+
+  /* ---------- Main content ---------- */
+  .content{flex:1; padding:28px 36px; overflow-y:auto;}
+  .topbar{
+    display:flex;
+    justify-content:space-between;
+    align-items:flex-start;
+    margin-bottom:20px;
+  }
+  .breadcrumb{font-size:12px; color:var(--text-soft); text-transform:uppercase; letter-spacing:1px; margin-bottom:4px;}
+
+  .welcome{
+    display:flex;
+    flex-direction:column;
+    align-items:center;
+    justify-content:center;
+    text-align:center;
+    height:60vh;
+    color:var(--text-soft);
+  }
+  .welcome h2{font-family:'Space Grotesk',sans-serif; color:var(--navy); font-size:22px; margin-bottom:6px;}
+  .welcome p{max-width:380px; font-size:14px; line-height:1.6;}
+
+  .proyek-header{
+    background:var(--surface);
+    border:1px solid var(--border);
+    border-radius:8px;
+    padding:20px 24px;
+    margin-bottom:22px;
+  }
+  .ph-top{display:flex; justify-content:space-between; align-items:flex-start; gap:16px;}
+  .ph-name{font-family:'Space Grotesk',sans-serif; font-size:24px; font-weight:700; color:var(--navy-dark);}
+  .ph-loc{font-size:13px; color:var(--text-soft); margin-top:3px;}
+  .ph-actions{display:flex; gap:8px; flex-shrink:0;}
+
+  .kontrak-block{
+    margin-top:16px;
+    display:flex;
+    align-items:center;
+    gap:14px;
+    padding-top:14px;
+    border-top:1px dashed var(--border);
+  }
+  .tick-label{
+    font-size:11px;
+    text-transform:uppercase;
+    letter-spacing:1.2px;
+    color:var(--text-soft);
+    position:relative;
+    padding-left:10px;
+  }
+  .tick-label::before{
+    content:"";
+    position:absolute; left:0; top:50%;
+    width:6px; height:1px; background:var(--text-soft);
+  }
+  .kontrak-value{
+    font-family:'IBM Plex Mono',monospace;
+    font-size:26px;
+    font-weight:600;
+    color:var(--navy);
+    padding:2px 10px;
+    border-left:2px solid var(--amber);
+    border-right:2px solid var(--amber);
+    transition:background-color .4s ease;
+  }
+  .kontrak-value.flash{background-color:#FCE9D2;}
+
+  .section-title{
+    font-family:'Space Grotesk',sans-serif;
+    font-size:16px;
+    font-weight:600;
+    color:var(--navy-dark);
+    margin:0 0 12px 0;
+  }
+
+  .boq-form{
+    background:var(--surface);
+    border:1px solid var(--border);
+    border-radius:8px;
+    padding:16px 20px;
+    margin-bottom:18px;
+  }
+  .boq-form-grid{
+    display:grid;
+    grid-template-columns: 3fr 1fr 1fr 1.3fr auto;
+    gap:10px;
+    align-items:end;
+  }
+  .field label{
+    display:block;
+    font-size:11.5px;
+    color:var(--text-soft);
+    margin-bottom:5px;
+    text-transform:uppercase;
+    letter-spacing:0.6px;
+  }
+  .field input, .field select{
+    width:100%;
+    padding:8px 10px;
+    border:1px solid var(--border);
+    border-radius:var(--radius);
+    font-size:13.5px;
+    font-family:'Inter',sans-serif;
+    color:var(--text);
+  }
+  .field input:focus, .field select:focus{outline:2px solid var(--navy); outline-offset:1px;}
+  .form-hint{font-size:11.5px; color:var(--text-soft); margin-top:8px;}
+
+  table{width:100%; border-collapse:collapse; background:var(--surface); border:1px solid var(--border); border-radius:8px; overflow:hidden;}
+  thead th{
+    background:#EEF2F6;
+    text-align:left;
+    font-size:11.5px;
+    text-transform:uppercase;
+    letter-spacing:0.6px;
+    color:var(--text-soft);
+    padding:10px 12px;
+    border-bottom:1px solid var(--border);
+  }
+  tbody td{
+    padding:10px 12px;
+    border-bottom:1px solid var(--border);
+    font-size:13.5px;
+    vertical-align:middle;
+  }
+  tbody tr:last-child td{border-bottom:none;}
+  tbody tr:hover{background:#FAFBFC;}
+  td.num, th.num{text-align:right; font-family:'IBM Plex Mono',monospace;}
+  .row-actions{display:flex; gap:6px; justify-content:flex-end;}
+  .icon-btn{
+    border:1px solid var(--border);
+    background:#fff;
+    border-radius:4px;
+    width:28px; height:28px;
+    cursor:pointer;
+    font-size:13px;
+    display:flex; align-items:center; justify-content:center;
+  }
+  .icon-btn:hover{background:#F2F4F7;}
+  .icon-btn.danger:hover{background:rgba(200,75,75,0.08); border-color:var(--danger);}
+  tfoot td{
+    padding:12px;
+    font-weight:600;
+    background:#F8FAFC;
+    border-top:2px solid var(--navy);
+  }
+  .empty-table{padding:28px; text-align:center; color:var(--text-soft); font-size:13.5px;}
+
+  /* ---------- Modal ---------- */
+  .modal-overlay{
+    position:fixed; inset:0;
+    background:rgba(20,28,40,0.45);
+    display:flex; align-items:center; justify-content:center;
+    z-index:50;
+  }
+  .modal-overlay.hidden{display:none;}
+  .modal{
+    background:#fff;
+    border-radius:10px;
+    padding:24px 26px;
+    width:420px;
+    max-width:90vw;
+    box-shadow:0 18px 50px rgba(0,0,0,0.25);
+  }
+  .modal h3{font-family:'Space Grotesk',sans-serif; margin:0 0 16px 0; color:var(--navy-dark); font-size:18px;}
+  .modal .field{margin-bottom:14px;}
+  .modal-actions{display:flex; justify-content:flex-end; gap:8px; margin-top:8px;}
+
+  .toast{
+    position:fixed; bottom:22px; right:22px;
+    background:var(--navy-dark); color:#fff;
+    padding:11px 18px; border-radius:6px;
+    font-size:13px; box-shadow:0 8px 24px rgba(0,0,0,0.25);
+    opacity:0; transform:translateY(8px);
+    transition:opacity .25s ease, transform .25s ease;
+    z-index:60;
+  }
+  .toast.show{opacity:1; transform:translateY(0);}
+
+  @media (prefers-reduced-motion: reduce){
+    *{transition:none !important;}
+  }
+</style>
+</head>
+<body>
+
+<div class="app">
+
+  <aside class="sidebar">
+    <div class="brand">
+      <div class="name">Thamrin Nine</div>
+      <div class="tag">Monitoring Proyek</div>
+    </div>
+
+    <div class="sidebar-actions">
+      <button class="btn btn-amber btn-block" id="btnNewProyek">+ Proyek Baru</button>
+    </div>
+
+    <div class="search-box">
+      <input type="text" id="searchProyek" placeholder="Cari nama / lokasi proyek...">
+    </div>
+
+    <div class="proyek-list" id="proyekList"></div>
+
+    <div class="sidebar-footer">
+      <div style="display:flex;align-items:center;gap:8px;padding:8px 4px;">
+        <span id="sheetsDot" style="width:8px;height:8px;border-radius:50%;background:#aaa;flex-shrink:0;"></span>
+        <span id="sheetsStatusText" style="font-size:12px;color:#A9C2DC;">Belum setup</span>
+      </div>
+      <button class="btn btn-ghost btn-sm" onclick="openSheetsSetup()">⚙️ Setup Google Sheets</button>
+      <button class="btn btn-ghost btn-sm" id="btnExport">Export Data (JSON)</button>
+      <button class="btn btn-ghost btn-sm" id="btnImport">Import Data (JSON)</button>
+      <input type="file" id="fileImport" class="file-input-hidden" accept="application/json">
+    </div>
+  </aside>
+
+  <main class="content" id="mainContent">
+    <!-- diisi via JS -->
+  </main>
+
+</div>
+
+<div class="modal-overlay hidden" id="modalOverlay">
+  <div class="modal">
+    <h3 id="modalTitle">Proyek Baru</h3>
+    <input type="hidden" id="proyekIdField">
+    <div class="field">
+      <label>Nama Proyek</label>
+      <input type="text" id="fNamaProyek" placeholder="Misal: Fit-out Lantai 12 Tower A">
+    </div>
+    <div class="field">
+      <label>Lokasi (di dalam komplek)</label>
+      <input type="text" id="fLokasiProyek" placeholder="Misal: Tower A, Lantai 12">
+    </div>
+    <div class="field">
+      <label>Catatan (opsional)</label>
+      <input type="text" id="fCatatanProyek" placeholder="Keterangan tambahan">
+    </div>
+    <div class="modal-actions">
+      <button class="btn btn-outline" id="btnCancelModal">Batal</button>
+      <button class="btn btn-primary" id="btnSaveProyek">Simpan</button>
+    </div>
+  </div>
+</div>
+
+<div class="toast" id="toast"></div>
+
+<script>
+/* =========================================================
+   DATA LAYER
+   ========================================================= */
+const STORAGE_KEY = 'tn9_monitoring_data_v1';
+const SHEETS_URL_KEY = 'tn9_sheets_script_url';
+let SCRIPT_URL = localStorage.getItem(SHEETS_URL_KEY) || '';
+
+/* =========================================================
+   GOOGLE SHEETS SYNC
+   ========================================================= */
+async function syncToSheets(){
+  if(!SCRIPT_URL) return;
+  try{
+    const form = new FormData();
+    form.append('action', 'save');
+    form.append('data', JSON.stringify(state));
+    await fetch(SCRIPT_URL, { method:'POST', body: form, mode:'no-cors' });
+  }catch(e){ console.warn('Gagal sync ke Sheets:', e); }
+}
+
+async function syncFromSheets(){
+  if(!SCRIPT_URL) return false;
+  try{
+    const res = await fetch(SCRIPT_URL + '?action=load');
+    const json = await res.json();
+    if(json && json.data && Array.isArray(json.data.proyek)){
+      state = json.data;
+      localStorage.setItem(STORAGE_KEY, JSON.stringify(state));
+      return true;
+    }
+  }catch(e){ console.warn('Gagal load dari Sheets:', e); }
+  return false;
+}
+
+function openSheetsSetup(){
+  document.getElementById('sheetsModal').classList.remove('hidden');
+  document.getElementById('sheetsUrlInput').value = SCRIPT_URL || '';
+}
+
+function closeSheetsSetup(){
+  document.getElementById('sheetsModal').classList.add('hidden');
+}
+
+async function connectSheets(){
+  const url = document.getElementById('sheetsUrlInput').value.trim();
+  if(!url.startsWith('https://')){
+    showToast('URL tidak valid. Harus dimulai dengan https://');
+    return;
+  }
+  SCRIPT_URL = url;
+  localStorage.setItem(SHEETS_URL_KEY, url);
+  closeSheetsSetup();
+  showToast('Menyambungkan ke Google Sheets...');
+  const ok = await syncFromSheets();
+  if(ok){
+    showToast('Berhasil terhubung & data dimuat ✅');
+    updateSheetsStatus(true);
+    renderAll();
+  } else {
+    showToast('URL tersimpan tapi gagal load data. Cek URL Apps Script.');
+    updateSheetsStatus(false);
+  }
+}
+
+function updateSheetsStatus(connected){
+  const dot = document.getElementById('sheetsDot');
+  const txt = document.getElementById('sheetsStatusText');
+  if(connected){
+    dot.style.background = '#2F9E6E';
+    txt.textContent = 'Terhubung ke Sheets';
+  } else if(SCRIPT_URL) {
+    dot.style.background = '#D98C3D';
+    txt.textContent = 'Belum terhubung';
+  } else {
+    dot.style.background = '#aaa';
+    txt.textContent = 'Belum setup';
+  }
+}
+
+function loadData(){
+  try{
+    const raw = localStorage.getItem(STORAGE_KEY);
+    if(!raw) return { proyek: [], boq: [] };
+    const parsed = JSON.parse(raw);
+    return {
+      proyek: parsed.proyek || [],
+      boq: parsed.boq || []
+    };
+  }catch(e){
+    console.error('Gagal membaca data tersimpan:', e);
+    return { proyek: [], boq: [] };
+  }
+}
+
+function saveData(){
+  try{
+    localStorage.setItem(STORAGE_KEY, JSON.stringify(state));
+    syncToSheets();
+  }catch(e){
+    console.error('Gagal menyimpan data:', e);
+    showToast('Gagal menyimpan data ke browser. Lakukan export manual.');
+  }
+}
+
+let state = loadData();
+let activeProyekId = null;
+let editingBoqId = null;
+
+function uid(prefix){
+  return prefix + '_' + Date.now().toString(36) + Math.random().toString(36).slice(2,7);
+}
+
+/* =========================================================
+   NUMBER HELPERS (mendukung format Indonesia: koma desimal)
+   ========================================================= */
+function parseIDNumber(str){
+  if(typeof str === 'number') return str;
+  if(!str) return 0;
+  str = String(str).trim();
+  // hapus pemisah ribuan (titik), ganti koma desimal jadi titik
+  str = str.replace(/\./g,'').replace(',', '.');
+  const n = parseFloat(str);
+  return isNaN(n) ? 0 : n;
+}
+
+function formatVolume(n){
+  return n.toLocaleString('id-ID', { minimumFractionDigits:0, maximumFractionDigits:4 });
+}
+
+function formatRupiah(n){
+  return 'Rp ' + Math.round(n).toLocaleString('id-ID');
+}
+
+/* =========================================================
+   COMPUTED VALUES
+   ========================================================= */
+function boqForProyek(proyekId){
+  return state.boq.filter(b => b.proyekId === proyekId);
+}
+
+function nilaiKontrak(proyekId){
+  return boqForProyek(proyekId).reduce((sum, item) => sum + (item.volume * item.hargaSatuan), 0);
+}
+
+/* =========================================================
+   RENDER: SIDEBAR
+   ========================================================= */
+function renderSidebar(){
+  const container = document.getElementById('proyekList');
+  const query = document.getElementById('searchProyek').value.trim().toLowerCase();
+
+  let list = [...state.proyek].sort((a,b) => b.createdAt - a.createdAt);
+  if(query){
+    list = list.filter(p =>
+      p.nama.toLowerCase().includes(query) ||
+      p.lokasi.toLowerCase().includes(query)
+    );
+  }
+
+  if(list.length === 0){
+    container.innerHTML = `<div class="empty-list">Belum ada proyek yang cocok.</div>`;
+    return;
+  }
+
+  container.innerHTML = list.map(p => `
+    <div class="proyek-item ${p.id === activeProyekId ? 'active' : ''}" data-id="${p.id}">
+      <div class="pi-name">${escapeHtml(p.nama)}</div>
+      <div class="pi-loc">${escapeHtml(p.lokasi || '—')}</div>
+      <div class="pi-val">${formatRupiah(nilaiKontrak(p.id))}</div>
+    </div>
+  `).join('');
+
+  container.querySelectorAll('.proyek-item').forEach(el => {
+    el.addEventListener('click', () => {
+      activeProyekId = el.dataset.id;
+      renderAll();
+    });
+  });
+}
+
+/* =========================================================
+   RENDER: MAIN CONTENT
+   ========================================================= */
+function renderMain(){
+  const main = document.getElementById('mainContent');
+  const proyek = state.proyek.find(p => p.id === activeProyekId);
+
+  if(!proyek){
+    main.innerHTML = `
+      <div class="welcome">
+        <h2>Belum ada proyek terpilih</h2>
+        <p>Pilih salah satu proyek di sebelah kiri, atau klik <strong>"+ Proyek Baru"</strong> untuk mulai mencatat data proyek dan BOQ-nya.</p>
+      </div>
+    `;
+    return;
+  }
+
+  const items = boqForProyek(proyek.id);
+  const total = nilaiKontrak(proyek.id);
+
+  main.innerHTML = `
+    <div class="breadcrumb">Thamrin Nine Complex</div>
+    <div class="proyek-header">
+      <div class="ph-top">
+        <div>
+          <div class="ph-name">${escapeHtml(proyek.nama)}</div>
+          <div class="ph-loc">${escapeHtml(proyek.lokasi || 'Lokasi belum diisi')}${proyek.catatan ? ' · ' + escapeHtml(proyek.catatan) : ''}</div>
+        </div>
+        <div class="ph-actions">
+          <button class="btn btn-outline btn-sm" id="btnEditProyek">Edit Proyek</button>
+          <button class="btn btn-danger-outline btn-sm" id="btnDeleteProyek">Hapus Proyek</button>
+        </div>
+      </div>
+      <div class="kontrak-block">
+        <span class="tick-label">Nilai Kontrak (otomatis dari BOQ)</span>
+        <span class="kontrak-value" id="kontrakValue">${formatRupiah(total)}</span>
+      </div>
+    </div>
+
+    <h3 class="section-title">${editingBoqId ? 'Edit Item BOQ' : 'Tambah Item BOQ'}</h3>
+    <div class="boq-form">
+      <div class="boq-form-grid">
+        <div class="field">
+          <label>Uraian Pekerjaan</label>
+          <input type="text" id="fUraian" placeholder="Misal: Pasang keramik lantai 60x60">
+        </div>
+        <div class="field">
+          <label>Volume</label>
+          <input type="text" id="fVolume" placeholder="cth: 125,5" inputmode="decimal">
+        </div>
+        <div class="field">
+          <label>Satuan</label>
+          <input type="text" id="fSatuan" list="satuanList" placeholder="m2, m3, ls...">
+          <datalist id="satuanList">
+            <option value="m2"></option>
+            <option value="m3"></option>
+            <option value="m'"></option>
+            <option value="kg"></option>
+            <option value="ton"></option>
+            <option value="ls"></option>
+            <option value="unit"></option>
+            <option value="titik"></option>
+            <option value="bh"></option>
+            <option value="set"></option>
+          </datalist>
+        </div>
+        <div class="field">
+          <label>Harga Satuan (Rp)</label>
+          <input type="text" id="fHarga" placeholder="cth: 150000" inputmode="decimal">
+        </div>
+        <div class="field">
+          <button class="btn btn-primary btn-block" id="btnSaveBoq">${editingBoqId ? 'Update' : 'Tambah'}</button>
+        </div>
+      </div>
+      <div class="form-hint">Volume dan harga mendukung format desimal koma, misal "125,5" atau "1.250,75". Jumlah dihitung otomatis = Volume × Harga Satuan.${editingBoqId ? ' <a href="#" id="btnCancelEditBoq" style="color:var(--danger);">Batal edit</a>' : ''}</div>
+    </div>
+
+    <h3 class="section-title">Rincian BOQ</h3>
+    ${renderBoqTable(items)}
+  `;
+
+  // bind header actions
+  document.getElementById('btnEditProyek').addEventListener('click', () => openProyekModal(proyek));
+  document.getElementById('btnDeleteProyek').addEventListener('click', () => deleteProyek(proyek.id));
+  document.getElementById('btnSaveBoq').addEventListener('click', () => saveBoqItem(proyek.id));
+  const cancelEditLink = document.getElementById('btnCancelEditBoq');
+  if(cancelEditLink){
+    cancelEditLink.addEventListener('click', (e) => { e.preventDefault(); editingBoqId = null; renderMain(); });
+  }
+
+  if(editingBoqId){
+    const item = state.boq.find(b => b.id === editingBoqId);
+    if(item){
+      document.getElementById('fUraian').value = item.uraian;
+      document.getElementById('fVolume').value = formatVolume(item.volume);
+      document.getElementById('fSatuan').value = item.satuan;
+      document.getElementById('fHarga').value = Math.round(item.hargaSatuan);
+    }
+  }
+
+  bindBoqRowActions(proyek.id);
+}
+
+function renderBoqTable(items){
+  if(items.length === 0){
+    return `<table><tbody><tr><td class="empty-table">Belum ada item BOQ. Tambahkan item pertama di atas.</td></tr></tbody></table>`;
+  }
+
+  const rows = items.map((item, idx) => {
+    const jumlah = item.volume * item.hargaSatuan;
+    return `
+      <tr data-id="${item.id}">
+        <td>${idx + 1}</td>
+        <td>${escapeHtml(item.uraian)}</td>
+        <td class="num">${formatVolume(item.volume)}</td>
+        <td>${escapeHtml(item.satuan)}</td>
+        <td class="num">${formatRupiah(item.hargaSatuan)}</td>
+        <td class="num">${formatRupiah(jumlah)}</td>
+        <td>
+          <div class="row-actions">
+            <button class="icon-btn" data-action="edit" title="Edit">✎</button>
+            <button class="icon-btn danger" data-action="delete" title="Hapus">🗑</button>
+          </div>
+        </td>
+      </tr>
+    `;
+  }).join('');
+
+  const total = items.reduce((sum, item) => sum + item.volume * item.hargaSatuan, 0);
+
+  return `
+    <table>
+      <thead>
+        <tr>
+          <th style="width:36px;">No</th>
+          <th>Uraian Pekerjaan</th>
+          <th class="num" style="width:100px;">Volume</th>
+          <th style="width:70px;">Satuan</th>
+          <th class="num" style="width:140px;">Harga Satuan</th>
+          <th class="num" style="width:150px;">Jumlah</th>
+          <th style="width:80px;"></th>
+        </tr>
+      </thead>
+      <tbody>${rows}</tbody>
+      <tfoot>
+        <tr>
+          <td colspan="5" style="text-align:right;">Total Nilai Kontrak</td>
+          <td class="num">${formatRupiah(total)}</td>
+          <td></td>
+        </tr>
+      </tfoot>
+    </table>
+  `;
+}
+
+function bindBoqRowActions(proyekId){
+  document.querySelectorAll('#mainContent tbody tr[data-id]').forEach(row => {
+    const id = row.dataset.id;
+    const editBtn = row.querySelector('[data-action="edit"]');
+    const delBtn = row.querySelector('[data-action="delete"]');
+    if(editBtn) editBtn.addEventListener('click', () => { editingBoqId = id; renderMain(); });
+    if(delBtn) delBtn.addEventListener('click', () => deleteBoqItem(id, proyekId));
+  });
+}
+
+function renderAll(){
+  renderSidebar();
+  renderMain();
+}
+
+/* =========================================================
+   ACTIONS: PROYEK
+   ========================================================= */
+function openProyekModal(proyek){
+  document.getElementById('modalTitle').textContent = proyek ? 'Edit Proyek' : 'Proyek Baru';
+  document.getElementById('proyekIdField').value = proyek ? proyek.id : '';
+  document.getElementById('fNamaProyek').value = proyek ? proyek.nama : '';
+  document.getElementById('fLokasiProyek').value = proyek ? proyek.lokasi : '';
+  document.getElementById('fCatatanProyek').value = proyek ? (proyek.catatan || '') : '';
+  document.getElementById('modalOverlay').classList.remove('hidden');
+  document.getElementById('fNamaProyek').focus();
+}
+
+function closeProyekModal(){
+  document.getElementById('modalOverlay').classList.add('hidden');
+}
+
+function saveProyekFromModal(){
+  const id = document.getElementById('proyekIdField').value;
+  const nama = document.getElementById('fNamaProyek').value.trim();
+  const lokasi = document.getElementById('fLokasiProyek').value.trim();
+  const catatan = document.getElementById('fCatatanProyek').value.trim();
+
+  if(!nama){
+    showToast('Nama proyek wajib diisi.');
+    return;
+  }
+
+  if(id){
+    const proyek = state.proyek.find(p => p.id === id);
+    proyek.nama = nama;
+    proyek.lokasi = lokasi;
+    proyek.catatan = catatan;
+    showToast('Proyek diperbarui.');
+  }else{
+    const newProyek = {
+      id: uid('proy'),
+      nama, lokasi, catatan,
+      createdAt: Date.now()
+    };
+    state.proyek.push(newProyek);
+    activeProyekId = newProyek.id;
+    showToast('Proyek baru ditambahkan.');
+  }
+
+  saveData();
+  closeProyekModal();
+  renderAll();
+}
+
+function deleteProyek(id){
+  const proyek = state.proyek.find(p => p.id === id);
+  if(!proyek) return;
+  const jumlahItem = boqForProyek(id).length;
+  const confirmMsg = `Hapus proyek "${proyek.nama}"? ${jumlahItem > 0 ? `Ini akan menghapus juga ${jumlahItem} item BOQ terkait.` : ''}`;
+  if(!confirm(confirmMsg)) return;
+
+  state.proyek = state.proyek.filter(p => p.id !== id);
+  state.boq = state.boq.filter(b => b.proyekId !== id);
+  if(activeProyekId === id) activeProyekId = null;
+  saveData();
+  showToast('Proyek dihapus.');
+  renderAll();
+}
+
+/* =========================================================
+   ACTIONS: BOQ
+   ========================================================= */
+function saveBoqItem(proyekId){
+  const uraian = document.getElementById('fUraian').value.trim();
+  const volume = parseIDNumber(document.getElementById('fVolume').value);
+  const satuan = document.getElementById('fSatuan').value.trim();
+  const harga = parseIDNumber(document.getElementById('fHarga').value);
+
+  if(!uraian){
+    showToast('Uraian pekerjaan wajib diisi.');
+    return;
+  }
+  if(volume <= 0){
+    showToast('Volume harus lebih dari 0.');
+    return;
+  }
+  if(!satuan){
+    showToast('Satuan wajib diisi.');
+    return;
+  }
+  if(harga < 0){
+    showToast('Harga satuan tidak boleh negatif.');
+    return;
+  }
+
+  if(editingBoqId){
+    const item = state.boq.find(b => b.id === editingBoqId);
+    item.uraian = uraian;
+    item.volume = volume;
+    item.satuan = satuan;
+    item.hargaSatuan = harga;
+    editingBoqId = null;
+    showToast('Item BOQ diperbarui.');
+  }else{
+    state.boq.push({
+      id: uid('boq'),
+      proyekId,
+      uraian, volume, satuan,
+      hargaSatuan: harga,
+      createdAt: Date.now()
+    });
+    showToast('Item BOQ ditambahkan.');
+  }
+
+  saveData();
+  renderAll();
+  flashKontrak();
+}
+
+function deleteBoqItem(id, proyekId){
+  if(!confirm('Hapus item BOQ ini?')) return;
+  state.boq = state.boq.filter(b => b.id !== id);
+  if(editingBoqId === id) editingBoqId = null;
+  saveData();
+  renderAll();
+  flashKontrak();
+}
+
+function flashKontrak(){
+  const el = document.getElementById('kontrakValue');
+  if(!el) return;
+  el.classList.add('flash');
+  setTimeout(() => el.classList.remove('flash'), 450);
+}
+
+/* =========================================================
+   UTIL
+   ========================================================= */
+function escapeHtml(str){
+  if(str === undefined || str === null) return '';
+  return String(str)
+    .replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;')
+    .replace(/"/g,'&quot;').replace(/'/g,'&#39;');
+}
+
+let toastTimer = null;
+function showToast(msg){
+  const el = document.getElementById('toast');
+  el.textContent = msg;
+  el.classList.add('show');
+  clearTimeout(toastTimer);
+  toastTimer = setTimeout(() => el.classList.remove('show'), 2400);
+}
+
+/* =========================================================
+   EXPORT / IMPORT
+   ========================================================= */
+function exportData(){
+  const blob = new Blob([JSON.stringify(state, null, 2)], { type: 'application/json' });
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement('a');
+  const ts = new Date().toISOString().slice(0,19).replace(/[:T]/g,'-');
+  a.href = url;
+  a.download = `thamrin-nine-monitoring-${ts}.json`;
+  document.body.appendChild(a);
+  a.click();
+  document.body.removeChild(a);
+  URL.revokeObjectURL(url);
+  showToast('Data berhasil di-export.');
+}
+
+function importData(file){
+  const reader = new FileReader();
+  reader.onload = (e) => {
+    try{
+      const parsed = JSON.parse(e.target.result);
+      if(!Array.isArray(parsed.proyek) || !Array.isArray(parsed.boq)){
+        throw new Error('Format tidak sesuai');
+      }
+      if(!confirm('Import akan menggantikan semua data yang ada saat ini. Lanjutkan?')) return;
+      state = { proyek: parsed.proyek, boq: parsed.boq };
+      activeProyekId = null;
+      editingBoqId = null;
+      saveData();
+      renderAll();
+      showToast('Data berhasil di-import.');
+    }catch(err){
+      console.error(err);
+      showToast('Gagal import: file JSON tidak valid.');
+    }
+  };
+  reader.readAsText(file);
+}
+
+/* =========================================================
+   EVENT BINDINGS (global, sekali jalan)
+   ========================================================= */
+document.getElementById('btnNewProyek').addEventListener('click', () => openProyekModal(null));
+document.getElementById('btnCancelModal').addEventListener('click', closeProyekModal);
+document.getElementById('btnSaveProyek').addEventListener('click', saveProyekFromModal);
+document.getElementById('modalOverlay').addEventListener('click', (e) => {
+  if(e.target.id === 'modalOverlay') closeProyekModal();
+});
+document.getElementById('searchProyek').addEventListener('input', renderSidebar);
+document.getElementById('btnExport').addEventListener('click', exportData);
+document.getElementById('btnImport').addEventListener('click', () => document.getElementById('fileImport').click());
+document.getElementById('fileImport').addEventListener('change', (e) => {
+  if(e.target.files[0]) importData(e.target.files[0]);
+  e.target.value = '';
+});
+
+/* Enter key support di modal */
+document.getElementById('fNamaProyek').addEventListener('keydown', (e) => { if(e.key === 'Enter') saveProyekFromModal(); });
+
+/* =========================================================
+   INIT
+   ========================================================= */
+renderAll();
+</script>
+<!-- SHEETS SETUP MODAL -->
+<div class="modal-overlay hidden" id="sheetsModal">
+  <div class="modal" style="width:480px;">
+    <h3>⚙️ Setup Google Sheets</h3>
+    <p style="font-size:13px;color:var(--text-soft);margin-bottom:16px;line-height:1.6;">
+      Hubungkan ke Google Sheets agar data sinkron otomatis ke semua perangkat.<br>
+      Ikuti langkah berikut sekali saja:
+    </p>
+    <ol style="font-size:13px;line-height:1.8;padding-left:18px;color:var(--text);margin-bottom:16px;">
+      <li>Buka <strong>Google Sheets</strong> → buat spreadsheet baru</li>
+      <li>Klik menu <strong>Extensions → Apps Script</strong></li>
+      <li>Hapus kode lama, paste kode di bawah ini:</li>
+    </ol>
+    <div style="background:#F2F4F7;border-radius:6px;padding:12px;font-family:monospace;font-size:11.5px;white-space:pre-wrap;margin-bottom:14px;overflow-x:auto;">const KEY = 'tn9_data';
+
+function doPost(e) {
+  try {
+    let data;
+    if(e.postData && e.postData.type === 'application/json'){
+      const body = JSON.parse(e.postData.contents);
+      data = body.data;
+    } else {
+      // FormData (no-cors)
+      data = JSON.parse(e.parameter.data);
+    }
+    PropertiesService.getScriptProperties().setProperty(KEY, JSON.stringify(data));
+    return ContentService.createTextOutput(JSON.stringify({ok:true}))
+      .setMimeType(ContentService.MimeType.JSON);
+  } catch(err) {
+    return ContentService.createTextOutput(JSON.stringify({ok:false, error:err.message}))
+      .setMimeType(ContentService.MimeType.JSON);
+  }
+}
+
+function doGet(e) {
+  try {
+    const raw = PropertiesService.getScriptProperties().getProperty(KEY);
+    const data = raw ? JSON.parse(raw) : {proyek:[], boq:[]};
+    return ContentService.createTextOutput(JSON.stringify({data}))
+      .setMimeType(ContentService.MimeType.JSON);
+  } catch(err) {
+    return ContentService.createTextOutput(JSON.stringify({data:{proyek:[],boq:[]}}))
+      .setMimeType(ContentService.MimeType.JSON);
+  }
+}</div>
+    <ol start="4" style="font-size:13px;line-height:1.8;padding-left:18px;color:var(--text);margin-bottom:16px;">
+      <li>Klik <strong>Deploy → New Deployment</strong></li>
+      <li>Type: <strong>Web App</strong> | Execute as: <strong>Me</strong> | Access: <strong>Anyone</strong></li>
+      <li>Klik Deploy → Authorize → copy URL yang muncul</li>
+      <li>Paste URL di bawah ini:</li>
+    </ol>
+    <div class="field">
+      <label>URL Google Apps Script</label>
+      <input type="text" id="sheetsUrlInput" placeholder="https://script.google.com/macros/s/.../exec" style="font-family:monospace;font-size:12px;">
+    </div>
+    <div class="modal-actions">
+      <button class="btn btn-outline" onclick="closeSheetsSetup()">Batal</button>
+      <button class="btn btn-primary" onclick="connectSheets()">Sambungkan</button>
+    </div>
+  </div>
+</div>
+
+<script>
+// Init: cek koneksi Sheets saat halaman dibuka
+(async function initSheets(){
+  if(SCRIPT_URL){
+    updateSheetsStatus(false);
+    const ok = await syncFromSheets();
+    updateSheetsStatus(ok);
+    if(ok) renderAll();
+  }
+})();
+</script>
+
+</body>
+</html>
