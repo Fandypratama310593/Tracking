@@ -120,6 +120,7 @@
   .proyek-item.active{background:rgba(255,255,255,0.13); border-color:var(--amber);}
   .proyek-item .pi-name{font-weight:600; font-size:14px; line-height:1.3;}
   .proyek-item .pi-loc{font-size:11.5px; color:#A9C2DC; margin-top:2px;}
+  .proyek-item .pi-vendor{font-size:11px; color:#8FAFC9; margin-top:1px;}
   .proyek-item .pi-val{
     font-family:'IBM Plex Mono',monospace;
     font-size:11.5px;
@@ -140,12 +141,6 @@
 
   /* ---------- Main content ---------- */
   .content{flex:1; padding:28px 36px; overflow-y:auto;}
-  .topbar{
-    display:flex;
-    justify-content:space-between;
-    align-items:flex-start;
-    margin-bottom:20px;
-  }
   .breadcrumb{font-size:12px; color:var(--text-soft); text-transform:uppercase; letter-spacing:1px; margin-bottom:4px;}
 
   .welcome{
@@ -169,7 +164,16 @@
   }
   .ph-top{display:flex; justify-content:space-between; align-items:flex-start; gap:16px;}
   .ph-name{font-family:'Space Grotesk',sans-serif; font-size:24px; font-weight:700; color:var(--navy-dark);}
-  .ph-loc{font-size:13px; color:var(--text-soft); margin-top:3px;}
+  .ph-meta{font-size:13px; color:var(--text-soft); margin-top:4px; display:flex; gap:14px; flex-wrap:wrap;}
+  .ph-meta .badge{
+    display:inline-flex; align-items:center; gap:5px;
+    font-size:11.5px;
+    background:#EEF2F6;
+    color:var(--navy-dark);
+    padding:3px 9px;
+    border-radius:20px;
+    font-weight:600;
+  }
   .ph-actions{display:flex; gap:8px; flex-shrink:0;}
 
   .kontrak-block{
@@ -205,27 +209,13 @@
   }
   .kontrak-value.flash{background-color:#FCE9D2;}
 
-  .section-title{
-    font-family:'Space Grotesk',sans-serif;
-    font-size:16px;
-    font-weight:600;
-    color:var(--navy-dark);
-    margin:0 0 12px 0;
+  /* ---------- Inline edit proyek ---------- */
+  .ph-edit-grid{
+    display:flex; flex-wrap:wrap; gap:12px; margin-top:10px;
   }
+  .ph-edit-grid .field{flex:1 1 200px; min-width:160px;}
+  .ph-edit-actions{display:flex; gap:8px; margin-top:14px;}
 
-  .boq-form{
-    background:var(--surface);
-    border:1px solid var(--border);
-    border-radius:8px;
-    padding:16px 20px;
-    margin-bottom:18px;
-  }
-  .boq-form-grid{
-    display:grid;
-    grid-template-columns: 3fr 1fr 1fr 1.3fr auto;
-    gap:10px;
-    align-items:end;
-  }
   .field label{
     display:block;
     font-size:11.5px;
@@ -244,28 +234,93 @@
     color:var(--text);
   }
   .field input:focus, .field select:focus{outline:2px solid var(--navy); outline-offset:1px;}
-  .form-hint{font-size:11.5px; color:var(--text-soft); margin-top:8px;}
 
-  table{width:100%; border-collapse:collapse; background:var(--surface); border:1px solid var(--border); border-radius:8px; overflow:hidden;}
+  .section-title{
+    font-family:'Space Grotesk',sans-serif;
+    font-size:16px;
+    font-weight:600;
+    color:var(--navy-dark);
+    margin:0 0 12px 0;
+  }
+
+  .boq-form{
+    background:var(--surface);
+    border:1px solid var(--border);
+    border-radius:8px;
+    padding:16px 20px;
+    margin-bottom:18px;
+  }
+  .boq-form-grid{
+    display:flex;
+    flex-wrap:wrap;
+    gap:12px;
+    align-items:end;
+  }
+  .boq-form-grid .field{flex:1 1 150px; min-width:140px;}
+  .boq-form-grid .field.f-uraian{flex:2 1 220px;}
+  .boq-form-grid .field.f-submit{flex:0 0 130px;}
+  .form-hint{font-size:11.5px; color:var(--text-soft); margin-top:10px;}
+
+  .table-wrap{overflow-x:auto; border-radius:8px;}
+  table{width:100%; border-collapse:collapse; background:var(--surface); border:1px solid var(--border); border-radius:8px; min-width:1180px;}
   thead th{
     background:#EEF2F6;
     text-align:left;
-    font-size:11.5px;
+    font-size:11px;
     text-transform:uppercase;
-    letter-spacing:0.6px;
+    letter-spacing:0.5px;
     color:var(--text-soft);
-    padding:10px 12px;
+    padding:10px 10px;
     border-bottom:1px solid var(--border);
+    white-space:nowrap;
   }
   tbody td{
-    padding:10px 12px;
+    padding:9px 10px;
     border-bottom:1px solid var(--border);
-    font-size:13.5px;
+    font-size:13px;
     vertical-align:middle;
+    white-space:nowrap;
   }
+  tbody td.uraian-cell{white-space:normal; min-width:180px;}
   tbody tr:last-child td{border-bottom:none;}
   tbody tr:hover{background:#FAFBFC;}
   td.num, th.num{text-align:right; font-family:'IBM Plex Mono',monospace;}
+  .bobot-pill{
+    display:inline-block;
+    font-family:'IBM Plex Mono',monospace;
+    font-size:12px;
+    font-weight:600;
+    color:var(--navy-dark);
+    background:#EEF2F6;
+    padding:2px 8px;
+    border-radius:20px;
+  }
+  .progress-cell{display:flex; align-items:center; gap:8px; justify-content:flex-end;}
+  .progress-track{width:64px; height:7px; background:#EEF2F6; border-radius:6px; overflow:hidden; flex-shrink:0;}
+  .progress-fill{height:100%; border-radius:6px; transition:width .3s ease;}
+  .progress-text{font-family:'IBM Plex Mono',monospace; font-size:11.5px; font-weight:600; white-space:nowrap; min-width:42px; text-align:right;}
+
+  .chart-section{
+    background:var(--surface);
+    border:1px solid var(--border);
+    border-radius:8px;
+    padding:20px 24px;
+    margin-top:6px;
+  }
+  .chart-legend{display:flex; gap:18px; margin-bottom:10px; font-size:12px; color:var(--text-soft);}
+  .chart-legend .lg-item{display:flex; align-items:center; gap:6px;}
+  .chart-legend .lg-swatch{width:11px; height:11px; border-radius:2px; display:inline-block;}
+  .chart-wrap{overflow-x:auto;}
+  .progress-summary{display:flex; gap:18px; flex-wrap:wrap; margin-bottom:16px;}
+  .summary-card{
+    flex:1 1 180px;
+    border:1px solid var(--border);
+    border-radius:8px;
+    padding:12px 16px;
+    background:#FAFBFC;
+  }
+  .summary-card .sc-label{font-size:11px; text-transform:uppercase; letter-spacing:0.6px; color:var(--text-soft); margin-bottom:6px;}
+  .summary-card .sc-value{font-family:'IBM Plex Mono',monospace; font-size:20px; font-weight:600; color:var(--navy);}
   .row-actions{display:flex; gap:6px; justify-content:flex-end;}
   .icon-btn{
     border:1px solid var(--border);
@@ -279,7 +334,7 @@
   .icon-btn:hover{background:#F2F4F7;}
   .icon-btn.danger:hover{background:rgba(200,75,75,0.08); border-color:var(--danger);}
   tfoot td{
-    padding:12px;
+    padding:12px 10px;
     font-weight:600;
     background:#F8FAFC;
     border-top:2px solid var(--navy);
@@ -298,7 +353,7 @@
     background:#fff;
     border-radius:10px;
     padding:24px 26px;
-    width:420px;
+    width:440px;
     max-width:90vw;
     box-shadow:0 18px 50px rgba(0,0,0,0.25);
   }
@@ -337,7 +392,7 @@
     </div>
 
     <div class="search-box">
-      <input type="text" id="searchProyek" placeholder="Cari nama / lokasi proyek...">
+      <input type="text" id="searchProyek" placeholder="Cari nama / lokasi / vendor...">
     </div>
 
     <div class="proyek-list" id="proyekList"></div>
@@ -373,6 +428,10 @@
       <input type="text" id="fLokasiProyek" placeholder="Misal: Tower A, Lantai 12">
     </div>
     <div class="field">
+      <label>Nama Vendor</label>
+      <input type="text" id="fVendorProyek" placeholder="Misal: PT Karya Bangun Sejahtera">
+    </div>
+    <div class="field">
       <label>Catatan (opsional)</label>
       <input type="text" id="fCatatanProyek" placeholder="Keterangan tambahan">
     </div>
@@ -389,7 +448,7 @@
 /* =========================================================
    DATA LAYER
    ========================================================= */
-const STORAGE_KEY = 'tn9_monitoring_data_v1';
+const STORAGE_KEY = 'tn9_monitoring_data_v2';
 const SHEETS_URL_KEY = 'tn9_sheets_script_url';
 let SCRIPT_URL = localStorage.getItem(SHEETS_URL_KEY) || '';
 
@@ -493,19 +552,19 @@ function saveData(){
 let state = loadData();
 let activeProyekId = null;
 let editingBoqId = null;
+let editingProyekHeader = false;
 
 function uid(prefix){
   return prefix + '_' + Date.now().toString(36) + Math.random().toString(36).slice(2,7);
 }
 
 /* =========================================================
-   NUMBER HELPERS (mendukung format Indonesia: koma desimal)
+   NUMBER & DATE HELPERS
    ========================================================= */
 function parseIDNumber(str){
   if(typeof str === 'number') return str;
   if(!str) return 0;
   str = String(str).trim();
-  // hapus pemisah ribuan (titik), ganti koma desimal jadi titik
   str = str.replace(/\./g,'').replace(',', '.');
   const n = parseFloat(str);
   return isNaN(n) ? 0 : n;
@@ -519,6 +578,22 @@ function formatRupiah(n){
   return 'Rp ' + Math.round(n).toLocaleString('id-ID');
 }
 
+function formatTanggal(isoStr){
+  if(!isoStr) return '-';
+  const d = new Date(isoStr + 'T00:00:00');
+  if(isNaN(d.getTime())) return '-';
+  return d.toLocaleDateString('id-ID', { day:'2-digit', month:'short', year:'numeric' });
+}
+
+function hitungDurasiHari(mulai, selesai){
+  if(!mulai || !selesai) return null;
+  const d1 = new Date(mulai + 'T00:00:00');
+  const d2 = new Date(selesai + 'T00:00:00');
+  if(isNaN(d1.getTime()) || isNaN(d2.getTime())) return null;
+  const diff = Math.round((d2 - d1) / 86400000) + 1; // inklusif
+  return diff > 0 ? diff : 0;
+}
+
 /* =========================================================
    COMPUTED VALUES
    ========================================================= */
@@ -528,6 +603,27 @@ function boqForProyek(proyekId){
 
 function nilaiKontrak(proyekId){
   return boqForProyek(proyekId).reduce((sum, item) => sum + (item.volume * item.hargaSatuan), 0);
+}
+
+function hitungBobot(jumlahItem, totalKontrak){
+  if(!totalKontrak || totalKontrak <= 0) return 0;
+  return (jumlahItem / totalKontrak) * 100;
+}
+
+function hitungProgressItem(item){
+  if(!item.volume || item.volume <= 0) return 0;
+  return ((item.volumeRealisasi || 0) / item.volume) * 100;
+}
+
+function hitungProgressFisik(proyekId){
+  const items = boqForProyek(proyekId);
+  const total = nilaiKontrak(proyekId);
+  if(total <= 0) return 0;
+  const realisasiValue = items.reduce((sum, item) => {
+    const realCapped = Math.min(item.volumeRealisasi || 0, item.volume || 0);
+    return sum + realCapped * item.hargaSatuan;
+  }, 0);
+  return (realisasiValue / total) * 100;
 }
 
 /* =========================================================
@@ -541,7 +637,8 @@ function renderSidebar(){
   if(query){
     list = list.filter(p =>
       p.nama.toLowerCase().includes(query) ||
-      p.lokasi.toLowerCase().includes(query)
+      (p.lokasi || '').toLowerCase().includes(query) ||
+      (p.vendor || '').toLowerCase().includes(query)
     );
   }
 
@@ -554,12 +651,17 @@ function renderSidebar(){
     <div class="proyek-item ${p.id === activeProyekId ? 'active' : ''}" data-id="${p.id}">
       <div class="pi-name">${escapeHtml(p.nama)}</div>
       <div class="pi-loc">${escapeHtml(p.lokasi || '—')}</div>
+      ${p.vendor ? `<div class="pi-vendor">Vendor: ${escapeHtml(p.vendor)}</div>` : ''}
       <div class="pi-val">${formatRupiah(nilaiKontrak(p.id))}</div>
     </div>
   `).join('');
 
   container.querySelectorAll('.proyek-item').forEach(el => {
     el.addEventListener('click', () => {
+      if(activeProyekId !== el.dataset.id){
+        editingProyekHeader = false;
+        editingBoqId = null;
+      }
       activeProyekId = el.dataset.id;
       renderAll();
     });
@@ -589,32 +691,24 @@ function renderMain(){
   main.innerHTML = `
     <div class="breadcrumb">Thamrin Nine Complex</div>
     <div class="proyek-header">
-      <div class="ph-top">
-        <div>
-          <div class="ph-name">${escapeHtml(proyek.nama)}</div>
-          <div class="ph-loc">${escapeHtml(proyek.lokasi || 'Lokasi belum diisi')}${proyek.catatan ? ' · ' + escapeHtml(proyek.catatan) : ''}</div>
-        </div>
-        <div class="ph-actions">
-          <button class="btn btn-outline btn-sm" id="btnEditProyek">Edit Proyek</button>
-          <button class="btn btn-danger-outline btn-sm" id="btnDeleteProyek">Hapus Proyek</button>
-        </div>
-      </div>
-      <div class="kontrak-block">
-        <span class="tick-label">Nilai Kontrak (otomatis dari BOQ)</span>
-        <span class="kontrak-value" id="kontrakValue">${formatRupiah(total)}</span>
-      </div>
+      ${editingProyekHeader ? renderProyekHeaderEdit(proyek) : renderProyekHeaderView(proyek, total)}
     </div>
 
+    ${!editingProyekHeader ? `
     <h3 class="section-title">${editingBoqId ? 'Edit Item BOQ' : 'Tambah Item BOQ'}</h3>
     <div class="boq-form">
       <div class="boq-form-grid">
-        <div class="field">
+        <div class="field f-uraian">
           <label>Uraian Pekerjaan</label>
           <input type="text" id="fUraian" placeholder="Misal: Pasang keramik lantai 60x60">
         </div>
         <div class="field">
-          <label>Volume</label>
+          <label>Volume Rencana</label>
           <input type="text" id="fVolume" placeholder="cth: 125,5" inputmode="decimal">
+        </div>
+        <div class="field">
+          <label>Volume Realisasi</label>
+          <input type="text" id="fVolumeRealisasi" placeholder="cth: 0" inputmode="decimal">
         </div>
         <div class="field">
           <label>Satuan</label>
@@ -637,18 +731,35 @@ function renderMain(){
           <input type="text" id="fHarga" placeholder="cth: 150000" inputmode="decimal">
         </div>
         <div class="field">
-          <button class="btn btn-primary btn-block" id="btnSaveBoq">${editingBoqId ? 'Update' : 'Tambah'}</button>
+          <label>Tanggal Mulai</label>
+          <input type="date" id="fTglMulai">
+        </div>
+        <div class="field">
+          <label>Tanggal Selesai</label>
+          <input type="date" id="fTglSelesai">
+        </div>
+        <div class="field f-submit">
+          <button class="btn btn-primary btn-block" id="btnSaveBoq">${editingBoqId ? 'Simpan Perubahan' : 'Simpan'}</button>
         </div>
       </div>
-      <div class="form-hint">Volume dan harga mendukung format desimal koma, misal "125,5" atau "1.250,75". Jumlah dihitung otomatis = Volume × Harga Satuan.${editingBoqId ? ' <a href="#" id="btnCancelEditBoq" style="color:var(--danger);">Batal edit</a>' : ''}</div>
+      <div class="form-hint">Volume &amp; harga mendukung format koma (cth "125,5"). Jumlah, Durasi, Bobot %, dan Progress Fisik dihitung otomatis dari Volume Realisasi.${editingBoqId ? ' <a href="#" id="btnCancelEditBoq" style="color:var(--danger);">Batal edit</a>' : ''}</div>
     </div>
 
     <h3 class="section-title">Rincian BOQ</h3>
-    ${renderBoqTable(items)}
+    ${renderBoqTable(items, total)}
+
+    ${renderProgressChartSection(items, proyek.id)}
+
+    ${renderSCurveSection(items, proyek)}
+    ` : ''}
   `;
 
-  // bind header actions
-  document.getElementById('btnEditProyek').addEventListener('click', () => openProyekModal(proyek));
+  if(editingProyekHeader){
+    bindProyekHeaderEditEvents(proyek);
+    return;
+  }
+
+  document.getElementById('btnEditProyek').addEventListener('click', () => { editingProyekHeader = true; renderMain(); });
   document.getElementById('btnDeleteProyek').addEventListener('click', () => deleteProyek(proyek.id));
   document.getElementById('btnSaveBoq').addEventListener('click', () => saveBoqItem(proyek.id));
   const cancelEditLink = document.getElementById('btnCancelEditBoq');
@@ -661,29 +772,150 @@ function renderMain(){
     if(item){
       document.getElementById('fUraian').value = item.uraian;
       document.getElementById('fVolume').value = formatVolume(item.volume);
+      document.getElementById('fVolumeRealisasi').value = formatVolume(item.volumeRealisasi || 0);
       document.getElementById('fSatuan').value = item.satuan;
       document.getElementById('fHarga').value = Math.round(item.hargaSatuan);
+      document.getElementById('fTglMulai').value = item.tanggalMulai || '';
+      document.getElementById('fTglSelesai').value = item.tanggalSelesai || '';
     }
   }
 
   bindBoqRowActions(proyek.id);
 }
 
-function renderBoqTable(items){
+function renderProyekHeaderView(proyek, total){
+  const durasiKontrak = hitungDurasiHari(proyek.kontrakMulai, proyek.kontrakSelesai);
+  const progressFisik = hitungProgressFisik(proyek.id);
+  return `
+    <div class="ph-top">
+      <div>
+        <div class="ph-name">${escapeHtml(proyek.nama)}</div>
+        <div class="ph-meta">
+          <span>${escapeHtml(proyek.lokasi || 'Lokasi belum diisi')}</span>
+          ${proyek.vendor ? `<span class="badge">Vendor: ${escapeHtml(proyek.vendor)}</span>` : `<span class="badge">Vendor belum diisi</span>`}
+          ${(proyek.kontrakMulai && proyek.kontrakSelesai) ? `<span class="badge">Durasi: ${durasiKontrak} hari (${formatTanggal(proyek.kontrakMulai)} – ${formatTanggal(proyek.kontrakSelesai)})</span>` : `<span class="badge">Durasi kontrak belum diisi</span>`}
+          ${proyek.catatan ? `<span>${escapeHtml(proyek.catatan)}</span>` : ''}
+        </div>
+      </div>
+      <div class="ph-actions">
+        <button class="btn btn-outline btn-sm" id="btnEditProyek">Edit Proyek</button>
+        <button class="btn btn-danger-outline btn-sm" id="btnDeleteProyek">Hapus Proyek</button>
+      </div>
+    </div>
+    <div class="kontrak-block">
+      <span class="tick-label">Nilai Kontrak (otomatis dari BOQ)</span>
+      <span class="kontrak-value" id="kontrakValue">${formatRupiah(total)}</span>
+      <span class="tick-label">Progress Fisik (tertimbang nilai)</span>
+      <span class="kontrak-value" id="progressValue" style="font-size:22px;">${progressFisik.toLocaleString('id-ID',{minimumFractionDigits:1, maximumFractionDigits:1})}%</span>
+    </div>
+  `;
+}
+
+function renderProyekHeaderEdit(proyek){
+  const durasiAwal = hitungDurasiHari(proyek.kontrakMulai, proyek.kontrakSelesai);
+  return `
+    <h3 class="section-title" style="margin-bottom:14px;">Edit Data Proyek</h3>
+    <div class="ph-edit-grid">
+      <div class="field">
+        <label>Nama Proyek</label>
+        <input type="text" id="ePhNama" value="${escapeAttr(proyek.nama)}">
+      </div>
+      <div class="field">
+        <label>Lokasi</label>
+        <input type="text" id="ePhLokasi" value="${escapeAttr(proyek.lokasi || '')}">
+      </div>
+      <div class="field">
+        <label>Nama Vendor</label>
+        <input type="text" id="ePhVendor" value="${escapeAttr(proyek.vendor || '')}">
+      </div>
+      <div class="field">
+        <label>Catatan</label>
+        <input type="text" id="ePhCatatan" value="${escapeAttr(proyek.catatan || '')}">
+      </div>
+      <div class="field">
+        <label>Tanggal Mulai Kontrak</label>
+        <input type="date" id="ePhKontrakMulai" value="${escapeAttr(proyek.kontrakMulai || '')}">
+      </div>
+      <div class="field">
+        <label>Tanggal Selesai Kontrak</label>
+        <input type="date" id="ePhKontrakSelesai" value="${escapeAttr(proyek.kontrakSelesai || '')}">
+      </div>
+      <div class="field">
+        <label>Durasi Kontrak (otomatis)</label>
+        <input type="text" id="ePhDurasiPreview" value="${durasiAwal !== null ? durasiAwal + ' hari' : '-'}" disabled style="background:#F5F6F8; color:var(--text-soft);">
+      </div>
+    </div>
+    <div class="ph-edit-actions">
+      <button class="btn btn-outline btn-sm" id="btnCancelHeaderEdit">Batal</button>
+      <button class="btn btn-primary btn-sm" id="btnSaveHeaderEdit">Simpan</button>
+    </div>
+  `;
+}
+
+function bindProyekHeaderEditEvents(proyek){
+  document.getElementById('btnCancelHeaderEdit').addEventListener('click', () => { editingProyekHeader = false; renderMain(); });
+
+  const updatePreview = () => {
+    const m = document.getElementById('ePhKontrakMulai').value;
+    const s = document.getElementById('ePhKontrakSelesai').value;
+    const d = hitungDurasiHari(m, s);
+    document.getElementById('ePhDurasiPreview').value = d !== null ? d + ' hari' : '-';
+  };
+  document.getElementById('ePhKontrakMulai').addEventListener('change', updatePreview);
+  document.getElementById('ePhKontrakSelesai').addEventListener('change', updatePreview);
+
+  document.getElementById('btnSaveHeaderEdit').addEventListener('click', () => {
+    const nama = document.getElementById('ePhNama').value.trim();
+    if(!nama){ showToast('Nama proyek wajib diisi.'); return; }
+    const kontrakMulai = document.getElementById('ePhKontrakMulai').value;
+    const kontrakSelesai = document.getElementById('ePhKontrakSelesai').value;
+    if(kontrakMulai && kontrakSelesai && kontrakSelesai < kontrakMulai){
+      showToast('Tanggal selesai kontrak tidak boleh sebelum tanggal mulai.');
+      return;
+    }
+    proyek.nama = nama;
+    proyek.lokasi = document.getElementById('ePhLokasi').value.trim();
+    proyek.vendor = document.getElementById('ePhVendor').value.trim();
+    proyek.catatan = document.getElementById('ePhCatatan').value.trim();
+    proyek.kontrakMulai = kontrakMulai;
+    proyek.kontrakSelesai = kontrakSelesai;
+    saveData();
+    editingProyekHeader = false;
+    showToast('Data proyek disimpan.');
+    renderAll();
+  });
+}
+
+function renderBoqTable(items, total){
   if(items.length === 0){
     return `<table><tbody><tr><td class="empty-table">Belum ada item BOQ. Tambahkan item pertama di atas.</td></tr></tbody></table>`;
   }
 
   const rows = items.map((item, idx) => {
     const jumlah = item.volume * item.hargaSatuan;
+    const durasi = hitungDurasiHari(item.tanggalMulai, item.tanggalSelesai);
+    const bobot = hitungBobot(jumlah, total);
+    const progress = hitungProgressItem(item);
+    const progressColor = progress >= 100 ? 'var(--success)' : (progress > 0 ? 'var(--amber)' : 'var(--border)');
     return `
       <tr data-id="${item.id}">
         <td>${idx + 1}</td>
-        <td>${escapeHtml(item.uraian)}</td>
+        <td class="uraian-cell">${escapeHtml(item.uraian)}</td>
         <td class="num">${formatVolume(item.volume)}</td>
+        <td class="num">${formatVolume(item.volumeRealisasi || 0)}</td>
         <td>${escapeHtml(item.satuan)}</td>
         <td class="num">${formatRupiah(item.hargaSatuan)}</td>
         <td class="num">${formatRupiah(jumlah)}</td>
+        <td>${formatTanggal(item.tanggalMulai)}</td>
+        <td>${formatTanggal(item.tanggalSelesai)}</td>
+        <td class="num">${durasi !== null ? durasi + ' hr' : '-'}</td>
+        <td class="num"><span class="bobot-pill">${bobot.toLocaleString('id-ID',{minimumFractionDigits:1, maximumFractionDigits:1})}%</span></td>
+        <td>
+          <div class="progress-cell">
+            <div class="progress-track"><div class="progress-fill" style="width:${Math.min(progress,100)}%; background:${progressColor};"></div></div>
+            <span class="progress-text">${progress.toLocaleString('id-ID',{minimumFractionDigits:1, maximumFractionDigits:1})}%</span>
+          </div>
+        </td>
         <td>
           <div class="row-actions">
             <button class="icon-btn" data-action="edit" title="Edit">✎</button>
@@ -694,32 +926,277 @@ function renderBoqTable(items){
     `;
   }).join('');
 
-  const total = items.reduce((sum, item) => sum + item.volume * item.hargaSatuan, 0);
+  const totalBobot = items.reduce((sum, item) => sum + hitungBobot(item.volume * item.hargaSatuan, total), 0);
 
   return `
+    <div class="table-wrap">
     <table>
       <thead>
         <tr>
-          <th style="width:36px;">No</th>
+          <th style="width:32px;">No</th>
           <th>Uraian Pekerjaan</th>
-          <th class="num" style="width:100px;">Volume</th>
-          <th style="width:70px;">Satuan</th>
-          <th class="num" style="width:140px;">Harga Satuan</th>
-          <th class="num" style="width:150px;">Jumlah</th>
+          <th class="num">Vol. Rencana</th>
+          <th class="num">Vol. Realisasi</th>
+          <th>Satuan</th>
+          <th class="num">Harga Satuan</th>
+          <th class="num">Jumlah</th>
+          <th>Mulai</th>
+          <th>Selesai</th>
+          <th class="num">Durasi</th>
+          <th class="num">Bobot</th>
+          <th class="num">Progress</th>
           <th style="width:80px;"></th>
         </tr>
       </thead>
       <tbody>${rows}</tbody>
       <tfoot>
         <tr>
-          <td colspan="5" style="text-align:right;">Total Nilai Kontrak</td>
+          <td colspan="6" style="text-align:right;">Total Nilai Kontrak</td>
           <td class="num">${formatRupiah(total)}</td>
+          <td colspan="2"></td>
+          <td></td>
+          <td class="num">${totalBobot.toLocaleString('id-ID',{minimumFractionDigits:1, maximumFractionDigits:1})}%</td>
+          <td></td>
           <td></td>
         </tr>
       </tfoot>
     </table>
+    </div>
   `;
 }
+
+function renderProgressChartSection(items, proyekId){
+  if(items.length === 0) return '';
+
+  const progressFisik = hitungProgressFisik(proyekId);
+  const itemTerlambat = items.filter(it => hitungProgressItem(it) <= 0).length;
+  const itemSelesai = items.filter(it => hitungProgressItem(it) >= 100).length;
+
+  const data = items.map(it => ({
+    label: it.uraian,
+    progress: hitungProgressItem(it),
+    volume: it.volume,
+    real: it.volumeRealisasi || 0,
+    satuan: it.satuan
+  }));
+
+  const maxVal = Math.max(100, ...data.map(d => Math.ceil(d.progress / 10) * 10));
+  const groupW = 76;
+  const padL = 46, padR = 16, padT = 24, padB = 64;
+  const chartH = 220;
+  const chartInnerH = chartH - padT - padB;
+  const chartW = data.length * groupW;
+  const svgW = padL + chartW + padR;
+  const svgH = chartH;
+  const barW = 22;
+  const gapBar = 6;
+
+  const yFor = (val) => padT + chartInnerH - (Math.min(val, maxVal) / maxVal) * chartInnerH;
+  const hFor = (val) => (Math.min(val, maxVal) / maxVal) * chartInnerH;
+
+  let bars = '';
+  let labels = '';
+  let gridlines = '';
+
+  // gridlines at 0%, 50%, 100% (and beyond if maxVal > 100)
+  const steps = maxVal / 50;
+  for(let i = 0; i <= steps; i++){
+    const val = i * 50;
+    const y = yFor(val);
+    gridlines += `<line x1="${padL}" y1="${y}" x2="${padL + chartW}" y2="${y}" stroke="#DBE1E8" stroke-width="1" stroke-dasharray="${val===100 ? '0' : '3,3'}" />`;
+    gridlines += `<text x="${padL - 8}" y="${y + 3}" font-size="10" text-anchor="end" fill="#6B7785" font-family="IBM Plex Mono, monospace">${val}%</text>`;
+  }
+
+  data.forEach((d, i) => {
+    const gx = padL + i * groupW;
+    const x1 = gx + (groupW - (barW * 2 + gapBar)) / 2;
+    const x2 = x1 + barW + gapBar;
+    const hRencana = hFor(100);
+    const hReal = hFor(d.progress);
+    const yRencana = padT + chartInnerH - hRencana;
+    const yReal = padT + chartInnerH - hReal;
+    const color = d.progress >= 100 ? '#2F9E6E' : (d.progress > 0 ? '#D98C3D' : '#C84B4B');
+
+    bars += `
+      <rect x="${x1}" y="${yRencana}" width="${barW}" height="${hRencana}" fill="#1F3A5F" rx="2">
+        <title>${escapeHtml(d.label)} — Rencana: ${formatVolume(d.volume)} ${escapeHtml(d.satuan)}</title>
+      </rect>
+      <rect x="${x2}" y="${yReal}" width="${barW}" height="${Math.max(hReal,1)}" fill="${color}" rx="2">
+        <title>${escapeHtml(d.label)} — Realisasi: ${formatVolume(d.real)} ${escapeHtml(d.satuan)} (${d.progress.toLocaleString('id-ID',{maximumFractionDigits:1})}%)</title>
+      </rect>
+      <text x="${x2 + barW/2}" y="${yReal - 6}" font-size="10" text-anchor="middle" fill="${color}" font-family="IBM Plex Mono, monospace" font-weight="600">${d.progress.toLocaleString('id-ID',{maximumFractionDigits:0})}%</text>
+    `;
+
+    const shortLabel = d.label.length > 16 ? d.label.slice(0,15) + '…' : d.label;
+    labels += `
+      <text x="${gx + groupW/2}" y="${padT + chartInnerH + 16}" font-size="10" text-anchor="end" fill="#1B2430"
+        transform="rotate(-35 ${gx + groupW/2} ${padT + chartInnerH + 16})">${escapeHtml(shortLabel)}<title>${escapeHtml(d.label)}</title></text>
+    `;
+  });
+
+  const svg = `
+    <svg viewBox="0 0 ${svgW} ${svgH}" width="${svgW}" height="${svgH}" xmlns="http://www.w3.org/2000/svg" style="font-family:Inter,sans-serif;">
+      ${gridlines}
+      ${bars}
+      ${labels}
+    </svg>
+  `;
+
+  return `
+    <h3 class="section-title">Grafik Volume Rencana vs Realisasi</h3>
+    <div class="chart-section">
+      <div class="progress-summary">
+        <div class="summary-card">
+          <div class="sc-label">Progress Fisik Proyek</div>
+          <div class="sc-value">${progressFisik.toLocaleString('id-ID',{minimumFractionDigits:1, maximumFractionDigits:1})}%</div>
+        </div>
+        <div class="summary-card">
+          <div class="sc-label">Item Selesai (≥100%)</div>
+          <div class="sc-value" style="color:var(--success);">${itemSelesai} / ${data.length}</div>
+        </div>
+        <div class="summary-card">
+          <div class="sc-label">Item Belum Mulai</div>
+          <div class="sc-value" style="color:var(--danger);">${itemTerlambat} / ${data.length}</div>
+        </div>
+      </div>
+      <div class="chart-legend">
+        <span class="lg-item"><span class="lg-swatch" style="background:#1F3A5F;"></span> Volume Rencana (100%)</span>
+        <span class="lg-item"><span class="lg-swatch" style="background:#D98C3D;"></span> Realisasi (berjalan)</span>
+        <span class="lg-item"><span class="lg-swatch" style="background:#2F9E6E;"></span> Realisasi (≥100%)</span>
+        <span class="lg-item"><span class="lg-swatch" style="background:#C84B4B;"></span> Belum mulai (0%)</span>
+      </div>
+      <div class="chart-wrap">${svg}</div>
+    </div>
+  `;
+}
+
+function getProyekTimeline(proyek, items){
+  let start = proyek.kontrakMulai || null;
+  let end = proyek.kontrakSelesai || null;
+  if(!start || !end){
+    const starts = items.map(it => it.tanggalMulai).filter(Boolean).sort();
+    const ends = items.map(it => it.tanggalSelesai).filter(Boolean).sort();
+    if(!start && starts.length) start = starts[0];
+    if(!end && ends.length) end = ends[ends.length - 1];
+  }
+  return { start, end };
+}
+
+function renderSCurveSection(items, proyek){
+  const { start, end } = getProyekTimeline(proyek, items);
+
+  if(!start || !end){
+    return `
+      <h3 class="section-title">Kurva S (Rencana vs Realisasi)</h3>
+      <div class="chart-section">
+        <p style="font-size:13px; color:var(--text-soft); margin:0;">
+          Kurva S belum bisa ditampilkan. Isi <strong>Tanggal Mulai &amp; Selesai Kontrak</strong> di Edit Proyek, atau Tanggal Mulai/Selesai pada item BOQ, agar rentang waktu proyek bisa dihitung.
+        </p>
+      </div>
+    `;
+  }
+
+  const startDate = new Date(start + 'T00:00:00');
+  const endDate = new Date(end + 'T00:00:00');
+  const totalDays = Math.round((endDate - startDate) / 86400000);
+
+  if(totalDays <= 0){
+    return `
+      <h3 class="section-title">Kurva S (Rencana vs Realisasi)</h3>
+      <div class="chart-section">
+        <p style="font-size:13px; color:var(--danger); margin:0;">
+          Rentang tanggal proyek tidak valid (tanggal selesai sebelum/sama dengan tanggal mulai). Periksa kembali tanggal kontrak.
+        </p>
+      </div>
+    `;
+  }
+
+  const total = nilaiKontrak(proyek.id);
+  const itemsWithBobot = items.map(it => ({
+    bobot: hitungBobot(it.volume * it.hargaSatuan, total),
+    mulai: it.tanggalMulai ? new Date(it.tanggalMulai + 'T00:00:00') : startDate,
+    selesai: it.tanggalSelesai ? new Date(it.tanggalSelesai + 'T00:00:00') : endDate
+  }));
+
+  const numPoints = Math.min(40, Math.max(2, totalDays + 1));
+  const samplePoints = [];
+  for(let i = 0; i < numPoints; i++){
+    const dayOffset = Math.round((i * totalDays) / (numPoints - 1));
+    const d = new Date(startDate);
+    d.setDate(d.getDate() + dayOffset);
+
+    let plannedPct = 0;
+    itemsWithBobot.forEach(it => {
+      const itDur = it.selesai - it.mulai;
+      let frac;
+      if(d <= it.mulai) frac = 0;
+      else if(d >= it.selesai) frac = 1;
+      else frac = itDur > 0 ? (d - it.mulai) / itDur : 1;
+      plannedPct += it.bobot * frac;
+    });
+    samplePoints.push({ dayOffset, pct: Math.min(plannedPct, 100) });
+  }
+
+  const today = new Date();
+  today.setHours(0,0,0,0);
+  const todayClamped = today < startDate ? startDate : (today > endDate ? endDate : today);
+  const todayDayOffset = Math.round((todayClamped - startDate) / 86400000);
+  const progressAktual = hitungProgressFisik(proyek.id);
+  const belumMulai = today < startDate;
+  const sudahLewat = today > endDate;
+
+  const padL = 46, padR = 16, padT = 24, padB = 36;
+  const chartW = 680, chartInnerH = 200;
+  const svgW = padL + chartW + padR;
+  const svgH = padT + chartInnerH + padB;
+
+  const xFor = (dayOffset) => padL + (dayOffset / totalDays) * chartW;
+  const yFor = (pct) => padT + chartInnerH - (Math.min(pct,100) / 100) * chartInnerH;
+
+  let gridlines = '';
+  [0,25,50,75,100].forEach(v => {
+    const y = yFor(v);
+    gridlines += `<line x1="${padL}" y1="${y}" x2="${padL+chartW}" y2="${y}" stroke="#DBE1E8" stroke-width="1" stroke-dasharray="3,3" />`;
+    gridlines += `<text x="${padL-8}" y="${y+3}" font-size="10" text-anchor="end" fill="#6B7785" font-family="IBM Plex Mono, monospace">${v}%</text>`;
+  });
+
+  const linePoints = samplePoints.map(p => `${xFor(p.dayOffset)},${yFor(p.pct)}`).join(' ');
+
+  const xToday = xFor(todayDayOffset);
+  const yToday = yFor(progressAktual);
+
+  const xLabelStart = padL;
+  const xLabelEnd = padL + chartW;
+
+  const svg = `
+    <svg viewBox="0 0 ${svgW} ${svgH}" width="${svgW}" height="${svgH}" xmlns="http://www.w3.org/2000/svg" style="font-family:Inter,sans-serif;">
+      ${gridlines}
+      <polyline points="${linePoints}" fill="none" stroke="#1F3A5F" stroke-width="2.5" />
+      <line x1="${xToday}" y1="${padT}" x2="${xToday}" y2="${padT+chartInnerH}" stroke="#C84B4B" stroke-width="1" stroke-dasharray="4,3" />
+      <circle cx="${xToday}" cy="${yToday}" r="6" fill="#C84B4B" stroke="#fff" stroke-width="1.5">
+        <title>Realisasi hari ini: ${progressAktual.toLocaleString('id-ID',{maximumFractionDigits:1})}%</title>
+      </circle>
+      <text x="${xToday}" y="${padT - 8}" font-size="11" text-anchor="middle" fill="#C84B4B" font-weight="600" font-family="IBM Plex Mono, monospace">${progressAktual.toLocaleString('id-ID',{maximumFractionDigits:1})}%</text>
+      <text x="${xLabelStart}" y="${padT+chartInnerH+18}" font-size="10.5" text-anchor="start" fill="#1B2430">${formatTanggal(start)}</text>
+      <text x="${xLabelEnd}" y="${padT+chartInnerH+18}" font-size="10.5" text-anchor="end" fill="#1B2430">${formatTanggal(end)}</text>
+    </svg>
+  `;
+
+  return `
+    <h3 class="section-title">Kurva S (Rencana vs Realisasi)</h3>
+    <div class="chart-section">
+      <div class="chart-legend">
+        <span class="lg-item"><span class="lg-swatch" style="background:#1F3A5F;"></span> Rencana kumulatif (dari bobot &amp; durasi tiap item)</span>
+        <span class="lg-item"><span class="lg-swatch" style="background:#C84B4B; border-radius:50%;"></span> Realisasi — satu titik hari ini</span>
+      </div>
+      <div class="chart-wrap">${svg}</div>
+      <p style="font-size:12px; color:var(--text-soft); margin:14px 0 0 0; line-height:1.6; border-top:1px dashed var(--border); padding-top:12px;">
+        ⚠️ <strong>Bukan riwayat penuh.</strong> Garis navy adalah rencana kumulatif yang dihitung dari tanggal &amp; bobot tiap item BOQ. Titik merah adalah realisasi <strong>hari ini saja</strong> (${formatTanggal(today.toISOString().slice(0,10))}) — sistem belum menyimpan riwayat realisasi per tanggal, jadi belum ada garis realisasi historis.${belumMulai ? ' Proyek belum dimulai berdasarkan tanggal kontrak.' : ''}${sudahLewat ? ' Tanggal hari ini sudah melewati tanggal selesai kontrak.' : ''}
+      </p>
+    </div>
+  `;
+}
+
 
 function bindBoqRowActions(proyekId){
   document.querySelectorAll('#mainContent tbody tr[data-id]').forEach(row => {
@@ -737,14 +1214,15 @@ function renderAll(){
 }
 
 /* =========================================================
-   ACTIONS: PROYEK
+   ACTIONS: PROYEK (modal = hanya untuk Proyek Baru)
    ========================================================= */
-function openProyekModal(proyek){
-  document.getElementById('modalTitle').textContent = proyek ? 'Edit Proyek' : 'Proyek Baru';
-  document.getElementById('proyekIdField').value = proyek ? proyek.id : '';
-  document.getElementById('fNamaProyek').value = proyek ? proyek.nama : '';
-  document.getElementById('fLokasiProyek').value = proyek ? proyek.lokasi : '';
-  document.getElementById('fCatatanProyek').value = proyek ? (proyek.catatan || '') : '';
+function openProyekModal(){
+  document.getElementById('modalTitle').textContent = 'Proyek Baru';
+  document.getElementById('proyekIdField').value = '';
+  document.getElementById('fNamaProyek').value = '';
+  document.getElementById('fLokasiProyek').value = '';
+  document.getElementById('fVendorProyek').value = '';
+  document.getElementById('fCatatanProyek').value = '';
   document.getElementById('modalOverlay').classList.remove('hidden');
   document.getElementById('fNamaProyek').focus();
 }
@@ -754,9 +1232,9 @@ function closeProyekModal(){
 }
 
 function saveProyekFromModal(){
-  const id = document.getElementById('proyekIdField').value;
   const nama = document.getElementById('fNamaProyek').value.trim();
   const lokasi = document.getElementById('fLokasiProyek').value.trim();
+  const vendor = document.getElementById('fVendorProyek').value.trim();
   const catatan = document.getElementById('fCatatanProyek').value.trim();
 
   if(!nama){
@@ -764,22 +1242,16 @@ function saveProyekFromModal(){
     return;
   }
 
-  if(id){
-    const proyek = state.proyek.find(p => p.id === id);
-    proyek.nama = nama;
-    proyek.lokasi = lokasi;
-    proyek.catatan = catatan;
-    showToast('Proyek diperbarui.');
-  }else{
-    const newProyek = {
-      id: uid('proy'),
-      nama, lokasi, catatan,
-      createdAt: Date.now()
-    };
-    state.proyek.push(newProyek);
-    activeProyekId = newProyek.id;
-    showToast('Proyek baru ditambahkan.');
-  }
+  const newProyek = {
+    id: uid('proy'),
+    nama, lokasi, vendor, catatan,
+    createdAt: Date.now()
+  };
+  state.proyek.push(newProyek);
+  activeProyekId = newProyek.id;
+  editingProyekHeader = false;
+  editingBoqId = null;
+  showToast('Proyek baru ditambahkan.');
 
   saveData();
   closeProyekModal();
@@ -795,7 +1267,10 @@ function deleteProyek(id){
 
   state.proyek = state.proyek.filter(p => p.id !== id);
   state.boq = state.boq.filter(b => b.proyekId !== id);
-  if(activeProyekId === id) activeProyekId = null;
+  if(activeProyekId === id){
+    activeProyekId = null;
+    editingProyekHeader = false;
+  }
   saveData();
   showToast('Proyek dihapus.');
   renderAll();
@@ -807,15 +1282,22 @@ function deleteProyek(id){
 function saveBoqItem(proyekId){
   const uraian = document.getElementById('fUraian').value.trim();
   const volume = parseIDNumber(document.getElementById('fVolume').value);
+  const volumeRealisasi = parseIDNumber(document.getElementById('fVolumeRealisasi').value);
   const satuan = document.getElementById('fSatuan').value.trim();
   const harga = parseIDNumber(document.getElementById('fHarga').value);
+  const tanggalMulai = document.getElementById('fTglMulai').value;
+  const tanggalSelesai = document.getElementById('fTglSelesai').value;
 
   if(!uraian){
     showToast('Uraian pekerjaan wajib diisi.');
     return;
   }
   if(volume <= 0){
-    showToast('Volume harus lebih dari 0.');
+    showToast('Volume rencana harus lebih dari 0.');
+    return;
+  }
+  if(volumeRealisasi < 0){
+    showToast('Volume realisasi tidak boleh negatif.');
     return;
   }
   if(!satuan){
@@ -826,24 +1308,33 @@ function saveBoqItem(proyekId){
     showToast('Harga satuan tidak boleh negatif.');
     return;
   }
+  if(tanggalMulai && tanggalSelesai && tanggalSelesai < tanggalMulai){
+    showToast('Tanggal selesai tidak boleh sebelum tanggal mulai.');
+    return;
+  }
 
   if(editingBoqId){
     const item = state.boq.find(b => b.id === editingBoqId);
     item.uraian = uraian;
     item.volume = volume;
+    item.volumeRealisasi = volumeRealisasi;
     item.satuan = satuan;
     item.hargaSatuan = harga;
+    item.tanggalMulai = tanggalMulai;
+    item.tanggalSelesai = tanggalSelesai;
     editingBoqId = null;
-    showToast('Item BOQ diperbarui.');
+    showToast('Item BOQ disimpan.');
   }else{
     state.boq.push({
       id: uid('boq'),
       proyekId,
       uraian, volume, satuan,
+      volumeRealisasi,
       hargaSatuan: harga,
+      tanggalMulai, tanggalSelesai,
       createdAt: Date.now()
     });
-    showToast('Item BOQ ditambahkan.');
+    showToast('Item BOQ disimpan.');
   }
 
   saveData();
@@ -875,6 +1366,10 @@ function escapeHtml(str){
   return String(str)
     .replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;')
     .replace(/"/g,'&quot;').replace(/'/g,'&#39;');
+}
+
+function escapeAttr(str){
+  return escapeHtml(str);
 }
 
 let toastTimer = null;
@@ -915,6 +1410,7 @@ function importData(file){
       state = { proyek: parsed.proyek, boq: parsed.boq };
       activeProyekId = null;
       editingBoqId = null;
+      editingProyekHeader = false;
       saveData();
       renderAll();
       showToast('Data berhasil di-import.');
@@ -929,7 +1425,7 @@ function importData(file){
 /* =========================================================
    EVENT BINDINGS (global, sekali jalan)
    ========================================================= */
-document.getElementById('btnNewProyek').addEventListener('click', () => openProyekModal(null));
+document.getElementById('btnNewProyek').addEventListener('click', () => openProyekModal());
 document.getElementById('btnCancelModal').addEventListener('click', closeProyekModal);
 document.getElementById('btnSaveProyek').addEventListener('click', saveProyekFromModal);
 document.getElementById('modalOverlay').addEventListener('click', (e) => {
@@ -943,7 +1439,6 @@ document.getElementById('fileImport').addEventListener('change', (e) => {
   e.target.value = '';
 });
 
-/* Enter key support di modal */
 document.getElementById('fNamaProyek').addEventListener('keydown', (e) => { if(e.key === 'Enter') saveProyekFromModal(); });
 
 /* =========================================================
